@@ -1,14 +1,15 @@
 package ar.com.ada.creditos;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import ar.com.ada.creditos.entities.Cliente;
-import ar.com.ada.creditos.excepciones.ClienteDNIException;
-import ar.com.ada.creditos.managers.ClienteManager;
+import ar.com.ada.creditos.entities.*;
+import ar.com.ada.creditos.excepciones.*;
+import ar.com.ada.creditos.managers.*;
 
 public class Credito {
 
@@ -104,8 +105,16 @@ public class Credito {
         fecha = dateformatArgentina.parse(Teclado.nextLine());
         cliente.setFechaNacimiento(fecha);
 
-        creditoCliente.create(cliente);
+        
+        Prestamo prestamo = new Prestamo();
 
+        prestamo.setImporte(new BigDecimal(10000));
+        prestamo.setCuotas(5);
+        prestamo.setFecha(new Date());
+        prestamo.setFechaAlta(new Date());
+        prestamo.setCliente(cliente);
+
+        creditoCliente.create(cliente);
         /*
          * Si concateno el OBJETO directamente, me trae todo lo que este en el metodo
          * toString() mi recomendacion es NO usarlo para imprimir cosas en pantallas, si
