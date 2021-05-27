@@ -1,5 +1,6 @@
 package ar.com.ada.creditos.entities;
 
+import java.util.ArrayList;
 import java.util.*;
 
 import javax.persistence.*;
@@ -17,7 +18,6 @@ public class Cliente {
     private int clienteId;
 
     private String nombre;
-
     @NaturalId
     private int dni;
 
@@ -108,9 +108,10 @@ public class Cliente {
         this.prestamos = prestamos;
     }
 
-    public void agregarPrestamo(Prestamo prestamo) {
-        this.prestamos.add(prestamo);
-    }
+   // public void agregarPrestamo(Prestamo prestamo) {
+     //   this.prestamos.add(prestamo);
+   // }
+
 
 
 

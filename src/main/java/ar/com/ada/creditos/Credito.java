@@ -16,12 +16,14 @@ public class Credito {
     public static Scanner Teclado = new Scanner(System.in);
 
     protected ClienteManager creditoCliente = new ClienteManager();
+    protected PrestamoManager creditoPrestamo = new PrestamoManager();
 
     public void iniciar() throws Exception {
 
         try {
 
             creditoCliente.setup();
+            creditoPrestamo.setup();
 
             printOpciones();
 
@@ -60,11 +62,37 @@ public class Credito {
                         System.out.println("La opcion no es correcta.");
                         break;
                 }
-
-                printOpciones();
+                printOpcionesPrestamo();
 
                 opcion = Teclado.nextInt();
                 Teclado.nextLine();
+          
+                switch (opcion) {
+                    case 1: 
+                        altaPrestamo();
+                        break;
+
+                    case 2:
+                        listarPrestamo();
+                        break;
+                    
+                    case 3:
+                        prestamoCliente_Id();
+                        break;
+                    
+                    default:
+                        System.out.println("La opcion no es correcta.");
+                        break;
+                }
+
+                  printOpciones();
+                  opcion = Teclado.nextInt();
+                  Teclado.nextLine();  
+
+              /*  printOpciones();
+
+                opcion = Teclado.nextInt();
+                Teclado.nextLine();*/
             }
 
             // Hago un safe exit del manager
@@ -81,6 +109,26 @@ public class Credito {
 
     }
 
+
+    public void prestamoCliente_Id() {
+    }
+
+
+    public void listarPrestamo() {
+
+        List<Prestamo> todos = creditoPrestamo.buscarTodos();
+        for (Prestamo p : todos) {
+            mostrarPrestamo(p);
+        }
+    }
+
+
+    public void mostrarPrestamo(Prestamo prestamo) {
+
+        System.out.println("Id: " + prestamo.getPrestamo_Id() + " Importe: " + prestamo.getImporte() + "Cuotas: " + prestamo.getCuotas() + " Cliente nombre: " + prestamo.getCliente().getNombre() + " Fecha: " + prestamo.getFecha());
+    }
+
+
     public void alta() throws Exception {
         Cliente cliente = new Cliente();
         System.out.println("Ingrese el nombre:");
@@ -91,7 +139,7 @@ public class Credito {
         System.out.println("Ingrese la direccion:");
         cliente.setDireccion(Teclado.nextLine());
 
-        System.out.println("Ingrese el Direccion alternativa(OPCIONAL):");
+        System.out.println("Ingrese Direccion alternativa(OPCIONAL):");
 
         String domAlternativo = Teclado.nextLine();
 
@@ -106,13 +154,15 @@ public class Credito {
         cliente.setFechaNacimiento(fecha);
 
         
-        Prestamo prestamo = new Prestamo();
+       /*Prestamo prestamo = new Prestamo();
 
         prestamo.setImporte(new BigDecimal(10000));
         prestamo.setCuotas(5);
         prestamo.setFecha(new Date());
         prestamo.setFechaAlta(new Date());
-        prestamo.setCliente(cliente);
+        prestamo.setCliente(cliente);*/
+
+
 
         creditoCliente.create(cliente);
         /*
@@ -278,4 +328,53 @@ public class Credito {
         System.out.println("");
         System.out.println("=======================================");
     }
+
+    public static void printOpcionesPrestamo() {
+        System.out.println("=======================================");
+        System.out.println("");
+        System.out.println("1. Para agregar un préstamo.");
+        System.out.println("2. Listado de préstamos");
+        System.out.println("3. Obtener préstamo por Cliente");
+        System.out.println("0. Para terminar.");
+        System.out.println("");
+        System.out.println("========================================");
+
+    }
+
+    public void altaPrestamo() throws Exception {
+        Prestamo prestamo = new Prestamo();
+        System.out.println("Ingrese importe del préstamo:");
+        prestamo.setImporte(Teclado.nextBigDecimal());
+        Teclado.nextLine();
+        System.out.println("Ingrese número de cuotas");
+        prestamo.setCuotas(Teclado.nextInt());
+        Teclado.nextLine();
+        System.out.println("Ingrese Fecha");
+        Date fecha = null;
+        DateFormat dateformatArgentina = new SimpleDateFormat("dd/MM/yy");
+
+        fecha = dateformatArgentina.parse(Teclado.nextLine());
+        prestamo.setFecha(fecha);
+
+        System.out.println("Ingrese Fecha de alta");
+        Date fechaAlta = null;
+        DateFormat dateformatArg = new SimpleDateFormat("dd/MM/yy");
+
+        fecha = dateformatArgentina.parse(Teclado.nextLine());
+        prestamo.setFechaAlta(fecha);
+
+        System.out.println("Ingrese DNI del cliente ");
+        Cliente cliente_Id = creditoCliente.readByDNI(Teclado.nextInt());
+        Teclado.nextLine();
+
+        prestamo.setCliente(cliente_Id);
+
+        creditoPrestamo.create(prestamo);
+
+        System.out.println("Prestamo generado con éxito.   "+ prestamo + "para el cliente: " + prestamo.getCliente());
+    
+
+    }
+
+
 }

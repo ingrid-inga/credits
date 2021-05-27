@@ -11,7 +11,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import ar.com.ada.creditos.entities.Cliente;
+import ar.com.ada.creditos.entities.*;
 
 public class ClienteManager {
 
@@ -131,6 +131,22 @@ public class ClienteManager {
         List<Cliente> clientes = query.getResultList();
 
         return clientes;
+
+    }
+
+    public Cliente buscarPorIdCliente(int idDeCliente) {
+
+        Session session = sessionFactory.openSession();
+
+        // SQL Injection vulnerability exposed.
+        // Deberia traer solo aquella del nombre y con esto demostrarmos que trae todas
+        // si pasamos
+        // como nombre: "' or '1'='1"
+        Query query = session.createNativeQuery("SELECT * FROM cliente where cliente_id = '" + idDeCliente + "'", Cliente.class);
+
+        Cliente clientesporId = (Cliente) query.getSingleResult();
+
+        return clientesporId;
 
     }
 

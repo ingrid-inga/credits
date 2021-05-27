@@ -7,16 +7,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "prestamo")
 public class Prestamo {
+
     @Id
     @Column(name = "prestamo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int prestamoId;
+    private int prestamo_Id;
 
     @Temporal(TemporalType.DATE)
     private Date fecha;
 
+    
     private BigDecimal importe;
-
+    
+    @Column(name = "cuotas")
     private int cuotas;
 
     @Column(name = "fecha_alta")
@@ -26,12 +29,13 @@ public class Prestamo {
     @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")
     private Cliente cliente;
 
-    public int getPrestamoId() {
-        return prestamoId;
+
+    public int getPrestamo_Id() { 
+        return prestamo_Id;
     }
 
-    public void setPrestamoId(int prestamoId) {
-        this.prestamoId = prestamoId;
+    public void setPrestamo_Id(int prestamoId) {
+        this.prestamo_Id = prestamoId;
     }
 
     public Date getFecha() {
@@ -72,9 +76,12 @@ public class Prestamo {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-        this.cliente.agregarPrestamo(this);
+       // this.cliente.agregarPrestamo(this);
     }
 
+   // public Prestamo() {
+        
+  //  }
  
 
     
