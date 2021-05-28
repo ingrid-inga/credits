@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
 import ar.com.ada.creditos.entities.*;
 
 
@@ -49,7 +48,6 @@ public class PrestamoManager {
         session.close();
 
     }
-
         
     
     public List<Prestamo> buscarTodos() {
@@ -60,6 +58,17 @@ public class PrestamoManager {
         List<Prestamo> todos = query.getResultList();
 
         return todos;
+    }
+
+
+    public List<Prestamo> buscarPor(String nombre) {
+        Session session = sessionFactory.openSession();
+
+        Query query = session.createNativeQuery("SELECT * FROM cliente where nombre = '" + nombre + "'", Prestamo.class);
+
+        List <Prestamo> prestamos = query.getResultList();
+
+        return prestamos;
     }
 
 		

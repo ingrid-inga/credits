@@ -66,33 +66,34 @@ public class Credito {
 
                 opcion = Teclado.nextInt();
                 Teclado.nextLine();
-          
+
                 switch (opcion) {
-                    case 1: 
+                    case 1:
                         altaPrestamo();
                         break;
 
                     case 2:
                         listarPrestamo();
                         break;
-                    
+
                     case 3:
-                        prestamoCliente_Id();
+                        prestamoCliente();
                         break;
-                    
+
                     default:
                         System.out.println("La opcion no es correcta.");
                         break;
                 }
 
-                  printOpciones();
-                  opcion = Teclado.nextInt();
-                  Teclado.nextLine();  
-
-              /*  printOpciones();
-
+                printOpciones();
                 opcion = Teclado.nextInt();
-                Teclado.nextLine();*/
+                Teclado.nextLine();
+
+                /*
+                 * printOpciones();
+                 * 
+                 * opcion = Teclado.nextInt(); Teclado.nextLine();
+                 */
             }
 
             // Hago un safe exit del manager
@@ -108,26 +109,6 @@ public class Credito {
         }
 
     }
-
-
-    public void prestamoCliente_Id() {
-    }
-
-
-    public void listarPrestamo() {
-
-        List<Prestamo> todos = creditoPrestamo.buscarTodos();
-        for (Prestamo p : todos) {
-            mostrarPrestamo(p);
-        }
-    }
-
-
-    public void mostrarPrestamo(Prestamo prestamo) {
-
-        System.out.println("Id: " + prestamo.getPrestamo_Id() + " Importe: " + prestamo.getImporte() + "Cuotas: " + prestamo.getCuotas() + " Cliente nombre: " + prestamo.getCliente().getNombre() + " Fecha: " + prestamo.getFecha());
-    }
-
 
     public void alta() throws Exception {
         Cliente cliente = new Cliente();
@@ -153,16 +134,13 @@ public class Credito {
         fecha = dateformatArgentina.parse(Teclado.nextLine());
         cliente.setFechaNacimiento(fecha);
 
-        
-       /*Prestamo prestamo = new Prestamo();
-
-        prestamo.setImporte(new BigDecimal(10000));
-        prestamo.setCuotas(5);
-        prestamo.setFecha(new Date());
-        prestamo.setFechaAlta(new Date());
-        prestamo.setCliente(cliente);*/
-
-
+        /*
+         * Prestamo prestamo = new Prestamo();
+         * 
+         * prestamo.setImporte(new BigDecimal(10000)); prestamo.setCuotas(5);
+         * prestamo.setFecha(new Date()); prestamo.setFechaAlta(new Date());
+         * prestamo.setCliente(cliente);
+         */
 
         creditoCliente.create(cliente);
         /*
@@ -371,10 +349,42 @@ public class Credito {
 
         creditoPrestamo.create(prestamo);
 
-        System.out.println("Prestamo generado con éxito.   "+ prestamo + "para el cliente: " + prestamo.getCliente());
-    
+        System.out.println("Prestamo generado con éxito.   " + prestamo + "para el cliente: " + prestamo.getCliente());
 
     }
 
+    public void listarPrestamo() {
+
+        List<Prestamo> todos = creditoPrestamo.buscarTodos();
+        for (Prestamo p : todos) {
+            mostrarPrestamo(p);
+        }
+    }
+
+    public void mostrarPrestamo(Prestamo prestamo) {
+
+        System.out.println("Id: " + prestamo.getPrestamo_Id() + " Importe: " + prestamo.getImporte() + "Cuotas: "
+                + prestamo.getCuotas() + " Cliente nombre: " + prestamo.getCliente().getNombre() + " Fecha: "
+                + prestamo.getFecha());
+    }
+
+    public void prestamoCliente() {
+
+        System.out.println("Ingrese nombre del cliente:");
+        String Cliente = Teclado.nextLine();
+        
+
+        List<Cliente> clientes = creditoCliente.buscarPor(Cliente);
+        for (Cliente cliente : clientes) {
+            mostrarPrestamo(cliente);
+        }
+
+    }
+
+    private void mostrarPrestamo(Cliente cliente) {
+        for (Prestamo prestamo : cliente.getPrestamos()) {
+            mostrarPrestamo(prestamo);
+        }
+    }
 
 }
